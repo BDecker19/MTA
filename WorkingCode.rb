@@ -42,56 +42,44 @@ end
 
 # generates the route
 class Route < Trip
-  attr_accessor :start_line         #array with name and [stations]
-  attr_accessor :end_line           #array with name and [stations]
-  attr_accessor :number_of_stops    # not including start point
+  attr_accessor :trip_route
+  attr_accessor :line
+  attr_accessor :no_lines_in_trip
 
-  def initialize	
-    get_start_end_points
+  # def find_no_intersection  # returns number of intersections
+    
+  #     case 
+  #       line.include? (@start_point) && line.include? (@start_point)
+  #     when
+  # end
 
-    # check if user already here
-    if @start_point == @end_point    
-      puts "You are already here silly goose :-)"
-    return
-    end
+  # def determine_line
+    
+  #   if @start_point == @end_point
+  #     puts "You are already here silly goose!"
+  #     return
+  #   end
 
-  	# determines the lines and puts them into the @start_line and @end_line
-    lines_used
-
-  	  # if traveling on a single line
-      if @start_line == @end_line     
-  	generate_route_single_line(@start_line[1])	
-  	end
-
-    puts "Thank you for traveling with Oren's TripCale"
-  end
-
-  def lines_used  
-    SUBWAY.each do |key, value|  # creates the start and end lines
-    	if value.include?(@start_point) 
-    	  @start_line = [key, value]
-    	end
-
-    	if value.include?(@end_point) 
-    	  @end_line = [key, value]
-    	end
-    end
-  end
+  #   case @start_point
+  #   when condition
+      
+  #     # route_line = SUBWAY[:line]
+  # end
 
   def generate_route_single_line (route_line)
     s = route_line.index (@start_point)
     e = route_line.index (@end_point)
+    # binding.pry
     if s < e
-      trip_route = route_line[s..e]
+      @trip_route = route_line[s..e]
     else
-      trip_route = route_line[e..s].reverse
+      @trip_route = route_line[e..s].reverse
     end
+    # binding.pry
+  end
 
-    puts "You don't need to change lines"
-    puts "Your route is: #{trip_route.join " -> "}"
-    binding.pry
-    @number_of_stops = trip_route.length - 1
-    puts "Total number of stops (not including the start): #{@number_of_stops}"
+  def generate_route_two_lines
+    
   end
 
 end
@@ -99,8 +87,12 @@ end
 
 puts "Welcome to MTA TripCalc by Oren"
 puts "!!Please note that for now we assume Union Square in the only intersection!!"
-trip = Route.new
+my_trip = Route.new
+my_trip.get_start_end_points
+my_trip.generate_route_single_line(SUBWAY["6 line"])
+# binding.pry
+puts my_trip.trip_route
 
-
+# we assume Union Square is the only intersection between the lines
 
 
