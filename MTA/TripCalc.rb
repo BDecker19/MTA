@@ -1,4 +1,5 @@
 require 'pry'
+require 'rainbow'
 # require 'test/unit'
 require_relative 'SubwayMap'
 
@@ -98,13 +99,13 @@ class Route < Trip
       trip_route = route_line[e..s].reverse
     end
 
-    puts "----------"
-    puts "You are traveling only on the #{line_name}"
-    puts "You don't need to change lines"
-    puts "Your route is: #{trip_route.join " -> "}"
+    puts "----------".color(:green)
+    puts "You are traveling only on the #{line_name}".color(:yellow)
+    puts "You don't need to change lines".color(:yellow)
+    puts "Your route is: #{trip_route.join " -> "}".color(:green)
     @number_of_stops = trip_route.length - 1
-    puts "Total number of stops (not including the start): #{@number_of_stops}"
-    puts "----------"
+    puts "Total number of stops (not including the start): #{@number_of_stops}".color(:yellow)
+    puts "----------".color(:green)
   end
 
 
@@ -140,22 +141,22 @@ class Route < Trip
     end_line_stations.shift
 
     #sends outcome to user
-    puts "----------"
-    puts "take the #{start_line_name} to Union Square"
-    puts "change at Union Square to #{end_line_name}"
+    puts "----------".color(:green)
+    puts "take the #{start_line_name} to Union Square".color(:yellow)
+    puts "change at Union Square to #{end_line_name}".color(:yellow)
     puts ""
-    puts "Your Route is:"
-    print start_line_stations.join " --> "
-    puts " --> "
-    puts "!change at Union Square!"
-    print " --> "
-    puts end_line_stations.join " --> "
+    puts "Your Route is:".color(:yellow)
+    print start_line_stations.join " --> ".color(:yellow)
+    puts " --> ".color(:yellow)
+    puts "!change at Union Square!".color(:red)
+    print " --> ".color(:yellow)
+    puts end_line_stations.join " --> ".color(:yellow)
 
     
     puts ""
     @number_of_stops = start_line_stations.length +  start_line_stations.length
     puts "Total number of stops (not including the start): #{@number_of_stops}"
-    puts "----------"
+    puts "----------".color(:green)
   end
 
 end
@@ -164,14 +165,14 @@ end
 puts "Welcome to MTA TripCalc by Oren"
 puts "!!Please note that for now we assume Union Square in the only intersection!!"
 
-print "Enter s - to Stat a trip, q - to quit: "
+print "Enter s - to Stat a trip, q - to quit: ".color(:red)
 while ((input = gets.strip.chomp) != 'q') do
   trip = Route.new
   puts ""
-  puts "Enter s - to Stat a trip, q - to quit"
+  puts "Enter s - to Stat a trip, q - to quit".color(:red)
 end
 
-puts "Thank you for traveling with Oren's TripCale"
+puts "Thank you for traveling with Oren's TripCale".color(:red)
 
 
 
