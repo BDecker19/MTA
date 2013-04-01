@@ -58,13 +58,25 @@ class Route < Trip
   	# determines the lines and puts them into the @start_line and @end_line
     lines_used
 
-  	  # if traveling on a single line
-      if @start_line == @end_line     
-  	generate_route_single_line(@start_line[1])	
+  	  
+    if @start_line == @end_line # if traveling on a single line    
+  	  
+      # to avoid conflict if start or end at Union Square
+      if start_point == "Union Square" 
+        line_to_use = @start_line
+      else
+        line_to_use = @end_line
+      end    
+      
+      generate_route_single_line(line_to_use[1])	
+
+    else
+      genrate_route_two_lines
   	end
 
     puts "Thank you for traveling with Oren's TripCale"
   end
+
 
   def lines_used  
     SUBWAY.each do |key, value|  # creates the start and end lines
@@ -78,6 +90,7 @@ class Route < Trip
     end
   end
 
+
   def generate_route_single_line (route_line)
     s = route_line.index (@start_point)
     e = route_line.index (@end_point)
@@ -89,9 +102,54 @@ class Route < Trip
 
     puts "You don't need to change lines"
     puts "Your route is: #{trip_route.join " -> "}"
-    binding.pry
     @number_of_stops = trip_route.length - 1
     puts "Total number of stops (not including the start): #{@number_of_stops}"
+  end
+
+
+  # assumes intersection at Union Square
+  def genrate_route_two_lines
+
+    start_line_name = @start_line[0]
+    start_line_stations = @start_line[1]
+
+    end_line_name = @end_line[0]
+    end_line_stations = @end_line[1]
+
+    # slice the unused stations for start_line
+    i = start_line_stations.index("Union Square")
+    e = start_line_stations.index(@start_point)
+    if i < e
+      start_line_stations = start_line_stations[i..e].reverse
+    else
+      start_line_stations = start_line_stations[e..i]
+    end
+
+    # slice the unused stations for start_line
+    i = end_line_stations.index("Union Square")
+    e = end_line_stations.index(@end_point)
+    if i < e
+      end_line_stations = end_line_stations[i..e]
+    else
+      end_line_stations = end_line_stations[e..i].reverse
+    end
+
+    puts "----------"
+    puts "take the #{start_line_name} to Union Square"
+    puts "change at Union Square to #{end_line_name}"
+    puts "----------"
+    puts "Your Route is:"
+    puts start_line_stations.join " --> "
+    puts "change at Union Square"
+    puts end_line_stations.join " --> "
+
+    # take out the intersections
+    start_line_stations.pop
+    end_line_stations.shift
+    puts "----------"
+    @number_of_stops = start_line_stations.length +  start_line_stations.length
+    puts "Total number of stops (not including the start): #{@number_of_stops}"
+    puts "----------"
   end
 
 end
