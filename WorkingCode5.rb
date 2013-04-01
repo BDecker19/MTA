@@ -46,7 +46,7 @@ class Route < Trip
   attr_accessor :end_line           #array with name and [stations]
   attr_accessor :number_of_stops    # not including start point
 
-  def initialize	
+  def initialize  
     get_start_end_points
 
     # check if user already here
@@ -55,12 +55,12 @@ class Route < Trip
     return
     end
 
-  	# determines the lines and puts them into the @start_line and @end_line
+    # determines the lines and puts them into the @start_line and @end_line
     lines_used
 
-  	  
+      
     if @start_line == @end_line # if traveling on a single line    
-  	  
+      
       # to avoid conflict if start or end at Union Square
       if start_point == "Union Square" 
         line_to_use = @start_line
@@ -68,28 +68,30 @@ class Route < Trip
         line_to_use = @end_line
       end    
       
-      generate_route_single_line(line_to_use[1], line_to_use[0])	
+      generate_route_single_line(line_to_use[1])  
 
     else
       genrate_route_two_lines
-  	end
+    end
+
+    puts "Thank you for traveling with Oren's TripCale"
   end
 
 
   def lines_used  
     SUBWAY.each do |key, value|  # creates the start and end lines
-    	if value.include?(@start_point) 
-    	  @start_line = [key, value]
-    	end
+      if value.include?(@start_point) 
+        @start_line = [key, value]
+      end
 
-    	if value.include?(@end_point) 
-    	  @end_line = [key, value]
-    	end
+      if value.include?(@end_point) 
+        @end_line = [key, value]
+      end
     end
   end
 
 
-  def generate_route_single_line (route_line, line_name)
+  def generate_route_single_line (route_line)
     s = route_line.index (@start_point)
     e = route_line.index (@end_point)
     if s < e
@@ -98,13 +100,10 @@ class Route < Trip
       trip_route = route_line[e..s].reverse
     end
 
-    puts "----------"
-    puts "You are traveling only on the #{line_name}"
     puts "You don't need to change lines"
     puts "Your route is: #{trip_route.join " -> "}"
     @number_of_stops = trip_route.length - 1
     puts "Total number of stops (not including the start): #{@number_of_stops}"
-    puts "----------"
   end
 
 
@@ -143,7 +142,8 @@ class Route < Trip
     puts "----------"
     puts "take the #{start_line_name} to Union Square"
     puts "change at Union Square to #{end_line_name}"
-    puts ""
+    
+    puts "----------"
     puts "Your Route is:"
     print start_line_stations.join " --> "
     puts " --> "
@@ -152,7 +152,7 @@ class Route < Trip
     puts end_line_stations.join " --> "
 
     
-    puts ""
+    puts "----------"
     @number_of_stops = start_line_stations.length +  start_line_stations.length
     puts "Total number of stops (not including the start): #{@number_of_stops}"
     puts "----------"
@@ -163,15 +163,7 @@ end
 
 puts "Welcome to MTA TripCalc by Oren"
 puts "!!Please note that for now we assume Union Square in the only intersection!!"
-
-print "Enter s - to Stat a trip, q - to quit: "
-while ((input = gets.strip.chomp) != 'q') do
-  trip = Route.new
-  puts ""
-  puts "Enter s - to Stat a trip, q - to quit"
-end
-
-puts "Thank you for traveling with Oren's TripCale"
+trip = Route.new
 
 
 
