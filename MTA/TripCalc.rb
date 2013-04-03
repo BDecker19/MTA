@@ -145,7 +145,7 @@ class Route < Trip
     puts "take the #{start_line_name} to Union Square".color(:yellow)
     puts "change at Union Square to #{end_line_name}".color(:yellow)
     puts ""
-    puts "Your Route is:".color(:yellow)
+    puts "Your Route is:".color(:green)
     print start_line_stations.join " --> ".color(:yellow)
     puts " --> ".color(:yellow)
     puts "!change at Union Square!".color(:red)
@@ -154,7 +154,7 @@ class Route < Trip
 
     
     puts ""
-    @number_of_stops = start_line_stations.length +  start_line_stations.length
+    @number_of_stops = start_line_stations.length +  end_line_stations.length
     puts "Total number of stops (not including the start): #{@number_of_stops}"
     puts "----------".color(:green)
   end
